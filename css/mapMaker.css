@@ -1,0 +1,94 @@
+body {
+	padding: 50px;
+}
+
+.room {
+	fill: yellow;
+}
+
+.selectedRoom {
+	fill: red;
+}
+
+.grid {
+	fill: lightgrey;
+}
+
+.exit {
+	stroke: rgb(6,120,155);
+}
+
+.selectedExit {
+	stroke: rgb(120,6,155);
+}
+
+.roomText {
+	fill: black;
+	font: bold 12px monospace;
+	text-anchor: middle;
+	alignment-baseline:middle;
+}
+
+#drawMap {
+	margin-bottom: 20px;
+}
+
+.mapSettings {
+	height: 100%;
+	width: 220px;
+	background-color: #ccc;
+	position: absolute;
+	top: 0px;
+	left: 0px;
+	padding: 1em;
+
+	font: 12pt Lucida Console;
+	font-family: Monaco;
+	color: #444;
+	line-height: 1.5em;
+	font-size: 0.5em;
+}
+
+.mapSetting {
+	vertical-align: bottom;
+	width: 210px;
+	margin-bottom: 20px;
+	height: 2em;
+}
+
+
+.mapSettingLabel {
+	border: 0; padding: 0;
+	width: 100px;
+	float: left;
+}
+
+.mapSettingInput {
+	float: right;
+	width: 100px;
+	margin: 0;
+}
+
+.roomTitle {
+	font: bold 16px monospace;
+	text-decoration: underline;
+	text-align: center;
+	margin-bottom: 10px;
+}
+
+.roomDetailFact {
+	float: right;
+	left: 100px;
+}
+
+#roomInfo {
+	margin-top: 2em;
+}
+
+svg {
+	position: absolute;
+	left: 250px;
+	top: 10px;
+}
+
+

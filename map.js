@@ -231,7 +231,6 @@ Map.prototype.pickRandomNeighbour = function(point) {
     randomNeighbour = this.neighbourDirections[randomNeighbourIndex];
   }
 
-
   return {
     x: point.x + randomNeighbour.xd,
     y: point.y + randomNeighbour.yd,

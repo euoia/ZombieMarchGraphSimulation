@@ -1,45 +1,132 @@
 <html>
 	<head>
-		<title>ZombieWalk Graph Simulation</title>
-		<script src="d3.v2.js"></script>
-		<script src="jquery-1.8.2.min.js"></script>
-		<script src="drawNodes.js"></script>
-		<script src="fraction.js/fraction.js"></script>
-		
-		<style type="text/css">
-			.node {
-				fill: yellow;
-				
-			}
-			
-			.name {
-				fill: black;
-				font: bold 16px monospace;
-				text-anchor: middle;
-				alignment-baseline:middle;
-			}
-			
-			svg {
-				border: 5px solid white;
-			}
-			
-		</style>
-		
+		<title>DragonHeart MapGen</title>
+		<script src="lib/d3.v2.js"></script>
+		<script src="lib/jquery-1.8.2.min.js"></script>
+		<script src="lib/underscore.js"></script>
+		<script src="lib/backbone.js"></script>
+		<script src="js/random.js"></script>
+		<script src="js/directions.js"></script>
+		<script src="js/pickLocation.js"></script>
+		<script src="js/Exit.js"></script>
+		<script src="js/ExitCollection.js"></script>
+		<script src="js/Room.js"></script>
+		<script src="js/RoomCollection.js"></script>
+		<script src="js/ZoneView.js"></script>
+		<script src="js/Zone.js"></script>
+		<script src="js/AppView.js"></script>
+		<link rel="stylesheet" type="text/css" href="css/mapMaker.css" />
+
+	</head>
+
+	<body>
+		<div class="mapSettings">
+			<div id="drawMap">
+				<input class="generateNewMapButton" type="button" value="generate new map" />
+			</div>
+
+			<div class="mapSetting">
+				<div class="mapSettingLabel">Area name</div>
+				<input class="mapSettingInput" type="text" id="areaName" value="mapgenarea" />
+			</div>
+
+			<div class="mapSetting">
+				<div class="mapSettingLabel">Zone prefix</div>
+				<input class="mapSettingInput" type="text" id="zonePrefix" value="l1" />
+			</div>
+
+			<div class="mapSetting">
+				<div class="mapSettingLabel">Maximum map width</div>
+				<input class="mapSettingInput width" type="text" value="30" />
+			</div>
+
+			<div class="mapSetting">
+				<div class="mapSettingLabel">Maximum map height</div>
+				<input class="mapSettingInput height" type="text" value="20" />
+			</div>
+
+			<div class="mapSetting">
+				<div class="mapSettingLabel">Maximum number of rooms*</div>
+				<input class="mapSettingInput maxRooms" type="text" value="5" />
+			</div>
+
+			<div class="mapSetting">
+				<div class="mapSettingLabel">Allow diagonal exits</div>
+				<input class="mapSettingInput" type="checkbox" id="allowDiagonals" checked="true" />
+			</div>
+
+			<div class="mapSetting">
+				<div class="mapSettingLabel">Show grid</div>
+				<input class="mapSettingInput showGrid" type="checkbox" checked="false" />
+			</div>
+
+			<div class="mapSetting">
+				<div class="mapSettingLabel">Random seed</div>
+				<input class="mapSettingInput" type="text" id="randomSeed" value="" />
+			</div>
+
+			<div class="info">
+				<i>* 0 means unlimited.</i>
+			</div>
+
+			<br />
+			<input id="generateCodeButton" type="button" value="regrenerate code" />
+			<br />
+			<br />
+			<i>Then copy the following text into your MUD client...</i>
+			<textArea id="generatedCode"></textArea><br />
+
+			<div id="roomInfo">
+				<div class="roomTitle">Room <div id="roomID">(select a room)</div></div>
+
+				<!--
+				<div id="addRoomExitControl">
+					<div class="roomSetting">
+						<div class="roomEditLabel">Add exit</div>
+						<input id="addNorthExit" type="button" value="n" />
+						<input id="addNorthEastExit" type="button" value="ne" />
+						<input id="addEastExit" type="button" value="e" />
+						<input id="addSouthEastExit" type="button" value="se" />
+						<input id="addSouthExit" type="button" value="s" />
+						<input id="addSouthWestExit" type="button" value="sw" />
+						<input id="addWestExit" type="button" value="w" />
+						<input id="addNorthWestExit" type="button" value="nw" />
+					</div>
+				</div>
+				-->
+
+				<input class="deleteExit" type="button" value="delete selected exit" />
+				<input class="deleteRoom" type="button" value="delete selected room" />
+			</div>
+
+		</div>
+
+		<div class="zoneView">
+		</div>
+
 		<script>
 			var nodes = null;
+			var map = null;
+			var app = null;
+
 			$(document).ready (function () {
-				nodes = new drawNodes();
-				
-				$("#tickButton").click( function () {
-					nodes.tick();
+				seed($("#randomSeed").val());
+
+				app = new AppView;
+				app.generateNewMap();
+
+				$("#generateCodeButton").click(function () {
+					var zonePrefix = $('#zonePrefix').val();
+					var areaName = $('#areaName').val();
+
+					if (zonePrefix === '' || areaName === '') {
+						alert('Must complete Zone prefix and Area name');
+						return;
+					}
+
+					cg.generateFromMap(map, $('#areaName').val(), $('#zonePrefix').val());
 				});
 			});
 		</script>
-	</head>
-	
-	<body>
-		<div id="tick">
-			<input id="tickButton" type="button" value="tick" />
-		</div>
 	</body>
 </html>
