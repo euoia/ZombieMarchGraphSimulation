@@ -17,6 +17,13 @@ $(document).ready (function () {
         this.zoneView.showGrid = $(event.srcElement).is(':checked') ? true : false;
         this.zoneView.render();
       },
+      'click .newRoom': function(event) {
+        var x = this.zoneView.selectedGrid.x;
+        var y = this.zoneView.selectedGrid.y;
+
+        this.zoneView.selectedRoom = this.zone.addRoom(x, y);
+        this.zoneView.render();
+      },
       'click .deleteExit': function(event) {
         this.zone.deleteExit(this.zoneView.selectedExit);
       },
@@ -75,6 +82,18 @@ $(document).ready (function () {
             this.zoneView.selectedRoom = this.zone.addExitToRoom(
               this.zoneView.selectedRoom,
               directions.toGrid('northeast'));
+            break;
+          case 8: // backspace.
+            if (this.zoneView.selectedRoom !== null) {
+              this.zone.deleteRoom(this.zoneView.selectedRoom);
+            }
+
+            if (this.zoneView.selectedExit !== null) {
+              this.zone.deleteExit(this.zoneView.selectedExit);
+            }
+
+            event.preventDefault();
+
             break;
         }
 

@@ -76,8 +76,9 @@
 			<i>Then copy the following text into your MUD client...</i>
 			<textArea id="generatedCode"></textArea><br />
 
-			<div id="roomInfo">
-				<div class="roomTitle">Room <div id="roomID">(select a room)</div></div>
+			<div class="roomInfo">
+				<div class="roomTitle">Room</div>
+				<div class="roomID">(select a room)</div>
 
 				<!--
 				<div id="addRoomExitControl">
@@ -95,8 +96,15 @@
 				</div>
 				-->
 
-				<input class="deleteExit" type="button" value="delete selected exit" />
-				<input class="deleteRoom" type="button" value="delete selected room" />
+				<div class="roomSetting">
+					<input class="newRoom" type="button" value="new room" />
+				</div>
+				<div class="roomSetting">
+					<input class="deleteExit" type="button" value="delete selected exit" />
+				</div>
+				<div class="roomSetting">
+					<input class="deleteRoom" type="button" value="delete selected room" />
+				</div>
 			</div>
 
 		</div>

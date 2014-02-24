@@ -61,6 +61,12 @@ Zone = Backbone.Model.extend({
     // Trigger the change event manually since the changes to rooms are not picked up.
     this.trigger('change');
   },
+  addRoom: function(x, y) {
+      room = new Room({id: this.nextRoomID, x: x, y: y});
+      this.nextRoomID += 1;
+      this.get('rooms').add(room);
+      return room;
+  },
   addExitToRoom: function(room, offset) {
     var x = room.get('x') + offset.xd,
       y = room.get('y') + offset.yd;
@@ -72,9 +78,7 @@ Zone = Backbone.Model.extend({
 
     // Check whether this grid position has already been assigned.
     if (nextRoom === undefined) {
-      nextRoom = new Room({id: this.nextRoomID, x: x, y: y});
-      this.nextRoomID += 1;
-      this.get('rooms').add(nextRoom);
+      nextRoom = this.addRoom(x, y);
     }
 
     var exit = room.get('exits').findWhere({

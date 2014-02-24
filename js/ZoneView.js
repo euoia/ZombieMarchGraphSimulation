@@ -4,10 +4,18 @@ ZoneView = Backbone.View.extend({
 
   initialize: function() {
     this.listenTo(this.model, 'change', this.render);
-    this.pixelsPerTile = 35;
+    this.pixelsPerTile = 26;
     this.roomRadius = 10;
     this.selectedRoom = null;
     this.selectedExit = null;
+    this.selectedGrid = null;
+
+    this.grid = [];
+    for (var x = 0; x < this.model.get('width'); x += 1) {
+      for (var y = 0; y < this.model.get('height'); y += 1) {
+        this.grid.push({x: x, y: y});
+      }
+    }
   },
 
   render: function() {
@@ -30,24 +38,26 @@ ZoneView = Backbone.View.extend({
     // Draw the grid.
     // Create a group to hold the text and the circle.
     if (this.showGrid === true) {
-      var grid = [];
-      for (var x = 0; x < this.model.get('width'); x += 1) {
-        for (var y = 0; y < this.model.get('height'); y += 1) {
-          grid.push({x: x, y: y});
-        }
-      }
-
       this.svg.selectAll('circle')
-        .data(grid)
+        .data(this.grid)
         .enter()
         .append('circle') // svg:g is a group.
         .attr('r', this.roomRadius)
-        .attr('class','grid')
+        .attr('class', function (grid) {
+          if (this.selectedGrid !== null &&
+              this.selectedGrid === grid
+          ) {
+            return 'selectedGrid';
+          }
+
+          return 'grid';
+        }.bind(this))
         .attr('transform', function(grid) {
           return 'translate(' +
             (grid.x * pixelsPerTile + pixelsPerTile) + ',' +
             (grid.y * pixelsPerTile + pixelsPerTile) + ')';
-        });
+        })
+        .on('click', this.selectGrid.bind(this));
       }
 
     // Draw the exits.
@@ -123,17 +133,36 @@ ZoneView = Backbone.View.extend({
       .text(function(room) {
         return room.id;
       });
+
+    if (this.selectedRoom !== null) {
+      $('.roomID').html('id:' + this.selectedRoom.get('id') +
+                        ' x:' + this.selectedRoom.get('x') +
+                        ' y:' + this.selectedRoom.get('y'));
+    } else if (this.selectedGrid !== null) {
+      $('.roomID').html(' x:' + this.selectedGrid.x +
+                        ' y:' + this.selectedGrid.y);
+    }
   },
 
   selectExit: function(exit) {
     this.selectedExit = exit;
     this.selectedRoom = null;
+    this.selectedGrid = null;
     this.render();
   },
 
   selectRoom: function(room) {
     this.selectedRoom = room;
     this.selectedExit = null;
+    this.selectedGrid = null;
+    this.render();
+  },
+
+  selectGrid: function(grid) {
+    console.log("select grid");
+    this.selectedRoom = null;
+    this.selectedExit = null;
+    this.selectedGrid = grid;
     this.render();
   }
 });
